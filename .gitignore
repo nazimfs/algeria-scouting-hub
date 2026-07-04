@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
+
+# Data (les données scrapées ne seront pas versionnées)
+data/raw/
+data/processed/
+data/exports/
+
+# Operating system
+.DS_Store
+Thumbs.db
