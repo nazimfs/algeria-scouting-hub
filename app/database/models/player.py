@@ -53,6 +53,6 @@ class Player(Base):
     )
 
     clubs = relationship(
-    "PlayerClub",
-    back_populates="player",
+        "PlayerClub",
+        back_populates="player",
     )
