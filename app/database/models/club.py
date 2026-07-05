@@ -43,3 +43,7 @@ class Club(Base):
         onupdate=func.now(),
         nullable=False,
     )
+    players = relationship(
+    "PlayerClub",
+    back_populates="club",
+    )
