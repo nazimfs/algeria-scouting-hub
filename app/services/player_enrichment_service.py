@@ -58,6 +58,10 @@ class PlayerEnrichmentService:
         if payload.get("birth_date") and player.birth_date is None:
             player.birth_date = date.fromisoformat(payload["birth_date"])
             was_updated = True
+        
+        if payload.get("birth_city") and player.birth_city is None:
+            player.birth_city = payload["birth_city"]
+            was_updated = True
 
         if payload.get("height_cm") and player.height_cm is None:
             player.height_cm = payload["height_cm"]

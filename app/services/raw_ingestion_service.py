@@ -9,6 +9,17 @@ from app.database.models import DataSource, RawIngestion
 
 
 class RawIngestionService:
+    SOURCE_METADATA = {
+        "Wikipedia": {
+            "base_url": "https://fr.wikipedia.org/wiki/",
+            "description": "French Wikipedia player pages",
+        },
+        "Transfermarkt": {
+            "base_url": "https://www.transfermarkt.fr/",
+            "description": "Transfermarkt player profile pages",
+        },
+    }
+
     def __init__(self) -> None:
         self.engine = get_engine()
 
@@ -26,7 +37,8 @@ class RawIngestionService:
                 raw_ingestion = RawIngestion(
                     data_source_id=data_source.id,
                     entity_type=item["entity_type"],
-                    source_entity_id=item["entity_name"],
+                    source_entity_id=item.get("source_entity_id")
+                    or item.get("entity_name"),
                     payload=item,
                     ingested_at=datetime.now(timezone.utc),
                 )
@@ -47,14 +59,25 @@ class RawIngestionService:
         statement = select(DataSource).where(DataSource.name == source_name)
         data_source = session.execute(statement).scalar_one_or_none()
 
+        metadata = self.SOURCE_METADATA.get(
+            source_name,
+            {
+                "base_url": None,
+                "description": None,
+            },
+        )
+
         if data_source is not None:
+            data_source.source_type = source_type
+            data_source.base_url = metadata["base_url"]
+            data_source.description = metadata["description"]
             return data_source
 
         data_source = DataSource(
             name=source_name,
             source_type=source_type,
-            base_url="https://fr.wikipedia.org/wiki/",
-            description="French Wikipedia player pages",
+            base_url=metadata["base_url"],
+            description=metadata["description"],
             is_active=True,
         )
 
