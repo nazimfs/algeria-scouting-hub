@@ -12,6 +12,8 @@ from app.database.models.competition_season import CompetitionSeason
 from app.database.models.player_nationality import PlayerNationality
 from app.database.models.player_position import PlayerPosition
 from app.database.models.match import Match
+from app.database.models.data_source import DataSource
+from app.database.models.raw_ingestion import RawIngestion
 
 
 
@@ -30,6 +32,8 @@ __all__ = [
     "PlayerNationality",
     "PlayerPosition",
     "Match",
+    "DataSource",
+    "RawIngestion",
 
 
 ]
