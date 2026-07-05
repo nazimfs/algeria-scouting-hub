@@ -14,6 +14,8 @@ from app.database.models.player_position import PlayerPosition
 from app.database.models.match import Match
 from app.database.models.data_source import DataSource
 from app.database.models.raw_ingestion import RawIngestion
+from app.database.models.player_eligibility_evidence import PlayerEligibilityEvidence
+
 
 
 
@@ -34,6 +36,7 @@ __all__ = [
     "Match",
     "DataSource",
     "RawIngestion",
+    "PlayerEligibilityEvidence"
 
 
 ]

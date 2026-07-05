@@ -5,7 +5,9 @@ def main():
     players = [
         "Rayan Cherki",
         "Michael Olise",
-        "Maghnes Akliouche"
+        "Maghnes Akliouche",
+        "Zineddine Belaïd"
+
     ]
 
     client = WikipediaClient()
