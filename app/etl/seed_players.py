@@ -26,6 +26,11 @@ PLAYERS = [
         "last_name": "Gouiri",
         "display_name": "Amine Gouiri",
     },
+    {
+    "first_name": "Zineddine",
+    "last_name": "Belaïd",
+    "display_name": "Zineddine Belaïd",
+    },
 ]
 
 

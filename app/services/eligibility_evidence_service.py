@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_engine
-from app.database.models import PlayerEligibilityEvidence, RawIngestion
+from app.database.models import Player, PlayerEligibilityEvidence, RawIngestion
 
 
 class EligibilityEvidenceService:
@@ -53,9 +53,13 @@ class EligibilityEvidenceService:
         evidences = eligibility_analysis.get("evidences", [])
 
         inserted_count = 0
+        player_name = payload.get("entity_name")
+        player_id = self._get_player_id_by_display_name(
+                session=session,
+                display_name=player_name,
+            )
 
-        for evidence in evidences:
-            player_name = payload.get("entity_name")
+        for evidence in evidences:  
             eligibility_country = evidence.get("target_country")
             source_name = payload.get("source")
             source_section = evidence.get("source_section")
@@ -74,6 +78,7 @@ class EligibilityEvidenceService:
             ):
                 continue
             player_evidence = PlayerEligibilityEvidence(
+                player_id=player_id,
                 player_name=player_name,
                 eligibility_country=eligibility_country,
                 source_name=source_name,
@@ -89,7 +94,7 @@ class EligibilityEvidenceService:
 
         return inserted_count
     
-    
+
     def _evidence_already_exists(
         self,
         session: Session,
@@ -112,3 +117,14 @@ class EligibilityEvidenceService:
         existing_evidence = session.execute(statement).scalar_one_or_none()
 
         return existing_evidence is not None
+    
+    def _get_player_id_by_display_name(
+        self,
+        session: Session,
+        display_name: str,
+    ):
+        statement = select(Player.player_id).where(
+            Player.display_name == display_name,
+        )
+
+        return session.execute(statement).scalar_one_or_none()

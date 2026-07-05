@@ -17,6 +17,12 @@ class PlayerEligibilityEvidence(Base):
         default=uuid.uuid4,
     )
 
+    player_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("scouting.players.player_id"),
+        nullable=True,
+    )
+
     player_name: Mapped[str] = mapped_column(String(150), nullable=False)
 
     eligibility_country: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -43,4 +49,5 @@ class PlayerEligibilityEvidence(Base):
         nullable=False,
     )
 
+    player = relationship("Player")
     raw_ingestion = relationship("RawIngestion")
