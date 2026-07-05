@@ -3,18 +3,27 @@ from app.connectors.wikipedia.connector import WikipediaConnector
 from app.services.landing_service import LandingService
 
 
-def main() -> None:
-    connector = WikipediaConnector(
-        player_name="rayan Cherki"
-    )
+PLAYERS = [
+    "Rayan Cherki",
+    "Michael Olise",
+    "Maghnes Akliouche",
+]
 
+
+def main() -> None:
     landing_service = LandingService()
     runner = ConnectorRunner(landing_service)
 
-    runner.run(
-        connector=connector,
-        entity="players",
-    )
+    for player_name in PLAYERS:
+        print("=" * 50)
+        print(f"Processing: {player_name}")
+
+        connector = WikipediaConnector(player_name=player_name)
+
+        runner.run(
+            connector=connector,
+            entity="players",
+        )
 
 
 if __name__ == "__main__":
