@@ -118,13 +118,15 @@ class EligibilityEvidenceService:
 
         return existing_evidence is not None
     
-    def _get_player_id_by_display_name(
-        self,
-        session: Session,
-        display_name: str,
-    ):
-        statement = select(Player.player_id).where(
-            Player.display_name == display_name,
+    def _get_player_id_by_display_name(self, session: Session, display_name: str):
+        if display_name is None:
+            return None
+
+        statement = (
+        select(Player.player_id)
+        .where(Player.display_name == display_name)
+        .order_by(Player.created_at.asc())
+        .limit(1)
         )
 
         return session.execute(statement).scalar_one_or_none()
