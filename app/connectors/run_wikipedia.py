@@ -1,4 +1,3 @@
-from app.connectors.connector_runner import ConnectorRunner
 from app.connectors.wikipedia.connector import WikipediaConnector
 from app.services.landing_service import LandingService
 
@@ -12,7 +11,8 @@ PLAYERS = [
 
 def main() -> None:
     landing_service = LandingService()
-    runner = ConnectorRunner(landing_service)
+
+    results = []
 
     for player_name in PLAYERS:
         print("=" * 50)
@@ -20,10 +20,35 @@ def main() -> None:
 
         connector = WikipediaConnector(player_name=player_name)
 
-        runner.run(
-            connector=connector,
-            entity="players",
-        )
+        try:
+            player_results = connector.run()
+            results.extend(player_results)
+            print(f"✅ Success: {player_name}")
+
+        except Exception as error:
+            print(f"❌ Error processing {player_name}: {error}")
+
+            results.append(
+                {
+                    "source": "Wikipedia",
+                    "source_type": "web",
+                    "entity_type": "player",
+                    "entity_name": player_name,
+                    "status": "failed",
+                    "payload": None,
+                    "error": str(error),
+                }
+            )
+
+    filepath = landing_service.save(
+        source="wikipedia",
+        entity="players_batch",
+        payload=results,
+    )
+
+    print("=" * 50)
+    print(f"✅ Batch saved: {filepath}")
+    print(f"Players processed: {len(results)}")
 
 
 if __name__ == "__main__":

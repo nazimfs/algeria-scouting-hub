@@ -41,4 +41,14 @@ class WikipediaConnector(BaseConnector):
 
         parsed_data = self.parse(raw_data)
 
-        return [parsed_data]
+        return [
+            {
+                "source": self.source_name,
+                "source_type": self.source_type,
+                "entity_type": "player",
+                "entity_name": self.player_name,
+                "status": "success",
+                "payload": parsed_data,
+                "error": None,
+            }
+        ]
