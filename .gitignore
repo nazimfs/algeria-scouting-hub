@@ -16,7 +16,11 @@ __pycache__/
 data/raw/
 data/processed/
 data/exports/
+data/external/
+data/staging/
+
 
 # Operating system
 .DS_Store
 Thumbs.db
+
